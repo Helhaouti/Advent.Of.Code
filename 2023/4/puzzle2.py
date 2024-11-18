@@ -1,9 +1,10 @@
 from re import findall, split
 
+
 def clean_card_data(data: str) -> (int, list, list):
     data_split = data.split(":")
 
-    card_number = int(''.join(findall(r"\d", data_split[0])))
+    card_number = int("".join(findall(r"\d", data_split[0])))
 
     numbers = data_split[1].split("|")
 
@@ -11,6 +12,7 @@ def clean_card_data(data: str) -> (int, list, list):
     owned_numbers = [int(number) for number in split(r"\s+", numbers[1].strip())]
 
     return (card_number, winning_numbers, owned_numbers)
+
 
 def determine_game_score(data: (int, list, list)) -> (int, int):
     card_number, winning_numbers, owned_numbers = data
@@ -24,8 +26,9 @@ def determine_game_score(data: (int, list, list)) -> (int, int):
 
     return (card_number, additional_cards)
 
+
 game_data = None
-with open("data.txt", 'r') as file:
+with open("data.txt", "r") as file:
     game_data = file.readlines()
 
 game_data = list(map(clean_card_data, game_data))
@@ -36,7 +39,9 @@ for card_number, additional_cards in game_data:
     for i in range(1, additional_cards + 1):
         next_card_number = card_number + i
         if next_card_number <= len(game_data):
-            card_counts[next_card_number] = card_counts.get(next_card_number, 0) + card_counts[card_number]
+            card_counts[next_card_number] = (
+                card_counts.get(next_card_number, 0) + card_counts[card_number]
+            )
 
 total_scratchcards = sum(card_counts.values())
 print(f"The total number of scratchcards is: {total_scratchcards}")

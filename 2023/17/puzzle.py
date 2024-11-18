@@ -26,17 +26,24 @@ def find_minimal_heat(end, min_distance, max_distance, heat_map):
                 if (new_x, new_y) in heat_map:
                     current_heat += heat_map[new_x, new_y]
                     if i >= min_distance:
-                        heapq.heappush(
-                            queue, (current_heat, new_x, new_y, dx, dy))
+                        heapq.heappush(queue, (current_heat, new_x, new_y, dx, dy))
 
 
 def read_grid():
-    with open("2023/17/data.txt", 'r') as file:
-        return {(i, j): int(c) for i, line in enumerate(file) for j, c in enumerate(line.strip())}
+    with open("2023/17/data.txt", "r") as file:
+        return {
+            (i, j): int(c)
+            for i, line in enumerate(file)
+            for j, c in enumerate(line.strip())
+        }
 
 
 if __name__ == "__main__":
     board = read_grid()
     end_point = max(board)
-    print(f"Part 1. The least heat loss it can incur: {find_minimal_heat(end_point, 1, 3, board)}")
-    print(f"Part 2. The least heat loss it can incur: {find_minimal_heat(end_point, 4, 10, board)}")
+    print(
+        f"Part 1. The least heat loss it can incur: {find_minimal_heat(end_point, 1, 3, board)}"
+    )
+    print(
+        f"Part 2. The least heat loss it can incur: {find_minimal_heat(end_point, 4, 10, board)}"
+    )

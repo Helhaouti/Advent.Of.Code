@@ -1,10 +1,11 @@
 def parse_mapping_section(section):
     mappings = []
-    lines = section.strip().split('\n')
+    lines = section.strip().split("\n")
     for line in lines[1:]:
         dest_start, source_start, length = map(int, line.split())
         mappings.append((source_start, dest_start, length))
     return mappings
+
 
 def apply_mapping(number, mappings):
     for src_start, dest_start, length in mappings:
@@ -12,10 +13,11 @@ def apply_mapping(number, mappings):
             return dest_start + (number - src_start)
     return number
 
+
 def process_almanac(data):
-    sections = data.split('\n\n')
-    
-    seeds = list(map(int, sections[0].split(': ')[1].split()))
+    sections = data.split("\n\n")
+
+    seeds = list(map(int, sections[0].split(": ")[1].split()))
 
     seed_to_soil = parse_mapping_section(sections[1])
     soil_to_fertilizer = parse_mapping_section(sections[2])
@@ -38,8 +40,9 @@ def process_almanac(data):
 
     return min(locations)
 
+
 almanac_data = None
-with open("data.txt", 'r') as file:
+with open("data.txt", "r") as file:
     almanac_data = file.read()
 
 print(f"The lowest location number is: {process_almanac(almanac_data)}")

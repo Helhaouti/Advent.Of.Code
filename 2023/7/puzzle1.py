@@ -1,11 +1,7 @@
-from functools import cmp_to_key
 from collections import Counter
+from functools import cmp_to_key
 
-STRENGTH_ORDER = [
-    "A", "K", "Q", "J", "T",
-    "9", "8", "7", "6", "5",
-    "4", "3", "2"
-]
+STRENGTH_ORDER = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"]
 
 
 def categorize_hand(hand):
@@ -51,6 +47,6 @@ def process_data(data):
     return sum(winnings)
 
 
-with open("data.txt", 'r') as file:
+with open("data.txt", "r") as file:
     data = process_data(file.read().split("\n"))
     print(f"The total winnings are: {data}")

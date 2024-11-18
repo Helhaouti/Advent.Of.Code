@@ -1,51 +1,54 @@
-from re import findall
 from itertools import groupby
+from re import findall
 
-MAX_CUBES_PER_COLOR = {
-    "red": 12,
-    "green": 13,
-    "blue": 14
-}
+MAX_CUBES_PER_COLOR = {"red": 12, "green": 13, "blue": 14}
 
 content = None
-with open("data.txt", "r") as file: content = file.read().split("\n")
+with open("data.txt", "r") as file:
+    content = file.read().split("\n")
+
 
 def clean_item(s: str) -> dict:
     def determine_cubes_per_set(cube_sets_s: str) -> {}:
-        return list(map(
-            lambda x: (
-                int(''.join(findall(r"\d", x))),
-                ''.join(findall(r"[a-z]", x))
-            ),
-            cube_sets_s.split(",")
-        ))
+        return list(
+            map(
+                lambda x: (
+                    int("".join(findall(r"\d", x))),
+                    "".join(findall(r"[a-z]", x)),
+                ),
+                cube_sets_s.split(","),
+            )
+        )
 
     return {
-        "id": int(''.join(findall(r"\d", s.split(":")[0]))),
-        "results": list(map(determine_cubes_per_set, s.split(":")[1].split(";")))
+        "id": int("".join(findall(r"\d", s.split(":")[0]))),
+        "results": list(map(determine_cubes_per_set, s.split(":")[1].split(";"))),
     }
+
 
 def determine_game_validity(data: dict[int, str]) -> bool:
     results, valid = data["results"], True
 
     for i in results:
         for color, value in i:
-            if value > MAX_CUBES_PER_COLOR[color]: valid = False
+            if value > MAX_CUBES_PER_COLOR[color]:
+                valid = False
 
     return valid
+
 
 def determine_the_power(data: dict[int, str]) -> int:
     flattened_data = [item for sublist in data["results"] for item in sublist]
     power = 1
 
     grouped_data = {}
-    for item, category in flattened_data: 
+    for item, category in flattened_data:
         grouped_data.setdefault(category, []).append(item)
 
     for _, values in grouped_data.items():
         largest_value = max(values)
         power *= largest_value
-    
+
     return power
 
 

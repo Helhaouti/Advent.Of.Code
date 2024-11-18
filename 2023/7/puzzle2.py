@@ -1,27 +1,21 @@
-from functools import cmp_to_key
 from collections import Counter
+from functools import cmp_to_key
 
-STRENGTH_ORDER = [
-    "A", "K", "Q", "T",
-    "9", "8", "7", "6",
-    "5", "4", "3", "2",
-    "J"
-]
+STRENGTH_ORDER = ["A", "K", "Q", "T", "9", "8", "7", "6", "5", "4", "3", "2", "J"]
 
 
 def categorize_hand(hand: str):
-    if ("J" in hand):
+    if "J" in hand:
         counts = Counter(hand)
         del counts["J"]
 
         if len(counts) > 0:
-            most_common = sorted(
-                counts.items(), key=lambda x: x[1], reverse=True)[0][0]
+            most_common = sorted(counts.items(), key=lambda x: x[1], reverse=True)[0][0]
 
             for i, c in enumerate(hand):
                 if c != "J":
                     continue
-                hand = hand[:i] + most_common + hand[i + 1:]
+                hand = hand[:i] + most_common + hand[i + 1 :]
 
     counts = Counter(hand)
     unique_counts = set(counts.values())
@@ -65,6 +59,6 @@ def process_data(data):
     return sum(winnings)
 
 
-with open("data.txt", 'r') as file:
+with open("data.txt", "r") as file:
     data = process_data(file.read().split("\n"))
     print(f"The total winnings are: {data}")

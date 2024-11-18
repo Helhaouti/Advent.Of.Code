@@ -1,4 +1,4 @@
-from re import sub, match
+from re import match, sub
 
 DECIMAL_TO_WORD_MAP = {
     "one": "1",
@@ -9,11 +9,12 @@ DECIMAL_TO_WORD_MAP = {
     "six": "6",
     "seven": "7",
     "eight": "8",
-    "nine": "9"
+    "nine": "9",
 }
 
 items: str = None
-with open("data.txt", "r") as file: items = file.read().split("\n")
+with open("data.txt", "r") as file:
+    items = file.read().split("\n")
 
 
 def convert_to_numbers(s: str) -> str:
@@ -21,14 +22,14 @@ def convert_to_numbers(s: str) -> str:
 
     for i in range(len(s)):
         if match(r"[1-9]", s[i]):
-            helper_string += (s[i])
+            helper_string += s[i]
             continue
 
         for length in [3, 4, 5]:
             if i + length <= len(s):
-                substr = s[i:i + length].lower()
+                substr = s[i : i + length].lower()
                 if substr in DECIMAL_TO_WORD_MAP:
-                    helper_string += DECIMAL_TO_WORD_MAP[substr] 
+                    helper_string += DECIMAL_TO_WORD_MAP[substr]
                     break
 
     return helper_string
@@ -36,19 +37,12 @@ def convert_to_numbers(s: str) -> str:
 
 items_numbered = list(map(convert_to_numbers, items))
 
-items_dropped_non_decimals = list(map(
-    lambda s: sub(r"[^1-9]", "", s),
-    items_numbered
-))
+items_dropped_non_decimals = list(map(lambda s: sub(r"[^1-9]", "", s), items_numbered))
 
-numbered_list = list(map(
-    lambda s: list(s),
-    items_dropped_non_decimals
-))
+numbered_list = list(map(lambda s: list(s), items_dropped_non_decimals))
 
-items_contatenated_firstlast_pair = list(map(
-    lambda l: int(str(l[0]) + str(l[-1])),
-    numbered_list
-))
+items_contatenated_firstlast_pair = list(
+    map(lambda l: int(str(l[0]) + str(l[-1])), numbered_list)
+)
 
 print(f"sum: {sum(items_contatenated_firstlast_pair)}")

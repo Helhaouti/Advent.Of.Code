@@ -7,34 +7,36 @@ def hash_algorithm(s):
 
 
 def parse_operation(operation):
-    if '=' in operation:
-        label, focal_length = operation.split('=')
-        return (label, '=', int(focal_length))
+    if "=" in operation:
+        label, focal_length = operation.split("=")
+        return (label, "=", int(focal_length))
     else:
-        label = operation.rstrip('-')
-        return (label, '-', None)
+        label = operation.rstrip("-")
+        return (label, "-", None)
 
 
-with open("data.txt", 'r') as file:
+with open("data.txt", "r") as file:
     boxes = {i: [] for i in range(256)}
 
-    for operation in file.read().split(','):
+    for operation in file.read().split(","):
         label, op, focal_length = parse_operation(operation)
 
         box_number = hash_algorithm(label)
 
         if op == "=":
             lens_in_box = next(
-                (lens for lens in boxes[box_number] if lens[0] == label), None)
+                (lens for lens in boxes[box_number] if lens[0] == label), None
+            )
             if lens_in_box:
-                boxes[box_number] = [(l, f) if l != label else (
-                    label, focal_length) for l, f in boxes[box_number]]
+                boxes[box_number] = [
+                    (l, f) if l != label else (label, focal_length)
+                    for l, f in boxes[box_number]
+                ]
             else:
                 boxes[box_number].append((label, focal_length))
 
         elif op == "-":
-            boxes[box_number] = [
-                lens for lens in boxes[box_number] if lens[0] != label]
+            boxes[box_number] = [lens for lens in boxes[box_number] if lens[0] != label]
 
     total_focusing_power = sum(
         (box_number + 1) * (slot_number + 1) * focal_length

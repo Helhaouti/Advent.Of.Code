@@ -13,14 +13,14 @@ def determine_options_to_beat_distance(time, distance):
 
 
 def process_data(data):
-    time = int(sub(r"\s+", '', ''.join(data[0].split(': ')[1])))
-    distance = int(sub(r"\s+", '', ''.join(data[1].split(': ')[1])))
+    time = int(sub(r"\s+", "", "".join(data[0].split(": ")[1])))
+    distance = int(sub(r"\s+", "", "".join(data[1].split(": ")[1])))
 
     return determine_options_to_beat_distance(time, distance)
 
 
 data = None
-with open("data.txt", 'r') as file:
+with open("data.txt", "r") as file:
     data = file.readlines()
 
 print(f"The number of ways you can beat the record is: {process_data(data)}")

@@ -3,7 +3,7 @@ import multiprocessing
 
 def parse_mapping_section(section):
     mappings = []
-    lines = section.strip().split('\n')
+    lines = section.strip().split("\n")
     for line in lines[1:]:
         dest_start, source_start, length = map(int, line.split())
         mappings.append((source_start, dest_start, length))
@@ -18,7 +18,7 @@ def apply_mapping(number, mappings):
 
 
 def process_seed_range(seed_range, mappings):
-    lowest_location = float('inf')
+    lowest_location = float("inf")
     start, length = seed_range
     for seed in range(start, start + length):
         soil = apply_mapping(seed, mappings[0])
@@ -36,16 +36,20 @@ def process_seed_range(seed_range, mappings):
 
 
 def process_almanac(data):
-    sections = data.split('\n\n')
-    seed_ranges_line = sections[0].split(': ')[1]
-    seed_ranges = [tuple(map(int, seed_ranges_line.split()[i:i + 2]))
-                   for i in range(0, len(seed_ranges_line.split()), 2)]
+    sections = data.split("\n\n")
+    seed_ranges_line = sections[0].split(": ")[1]
+    seed_ranges = [
+        tuple(map(int, seed_ranges_line.split()[i : i + 2]))
+        for i in range(0, len(seed_ranges_line.split()), 2)
+    ]
 
     mappings = [parse_mapping_section(section) for section in sections[1:8]]
 
     pool = multiprocessing.Pool(multiprocessing.cpu_count())
-    results = [pool.apply_async(process_seed_range, args=(
-        seed_range, mappings)) for seed_range in seed_ranges]
+    results = [
+        pool.apply_async(process_seed_range, args=(seed_range, mappings))
+        for seed_range in seed_ranges
+    ]
     pool.close()
     pool.join()
 
@@ -54,7 +58,7 @@ def process_almanac(data):
 
 if __name__ == "__main__":
     almanac_data = None
-    with open("2023/5/data.txt", 'r') as file:
+    with open("2023/5/data.txt", "r") as file:
         almanac_data = file.read()
 
     print(f"The lowest location number is: {process_almanac(almanac_data)}")
